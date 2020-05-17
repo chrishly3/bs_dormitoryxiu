@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" :style="{ background: 'url('+ bgImageRUL +')',backgroundSize: 'cover' ,backgroundRepeat: 'no-repeat',opacity: 0.75}">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -8,6 +8,12 @@
       auto-complete="on"
       label-position="left"
     >
+    <div class="title-container">
+          <h3 class="title">
+            {{ "寝室报修系统"}}
+          </h3>
+          <lang-select class="set-language" />
+        </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -19,6 +25,7 @@
           type="text"
           auto-complete="on"
           placeholder="请输入用户名"
+          tabindex="1"
         />
       </el-form-item>
 
@@ -74,6 +81,7 @@
           type="primary"
           style="width:100%;"
           @click.native.prevent="handleLogin"
+          class="btn-login"
         >登录</el-button>
       </el-form-item>
 
@@ -82,6 +90,24 @@
         <span>密码: &nbsp;&nbsp;&nbsp; {{ loginForm.password }}</span>
       </div>
     </el-form>
+
+    <vue-particles
+      color="#fff"
+      :particle-opacity="0.7"
+      :particles-number="60"
+      shape-type="triangle"
+      :particle-size="4"
+      lines-color="#fff"
+      :lines-width="1"
+      :line-linked="true"
+      :line-opacity="0.4"
+      :lines-distance="150"
+      :move-speed="2"
+      :hover-effect="true"
+      hover-mode="grab"
+      :click-effect="true"
+      click-mode="push"
+    />
   </div>
 </template>
 
@@ -117,6 +143,7 @@ export default {
         codeKey: '',
         codeText: ''
       },
+      bgImageRUL: require('@/views/login/background.jpg'),
       codeUrl: '',
       loginRules: {
         username: [
@@ -204,17 +231,29 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-$bg: #2d3a4b;
-$light_gray: #eee;
+<style  lang="scss">
+$bg:#283443;
+$light_gray:#fff;
+$cursor: #eee;
+
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
 
 /* reset element-ui css */
 .login-container {
+   /* background:url(../login/login3.jpg);
+    background-size:100% 100%;
+    background-repeat:no-repeat; */
+
   .el-input {
     display: inline-block;
     height: 47px;
     width: 85%;
     input {
+      caret-color: $cursor;
       background: transparent;
       border: 0px;
       -webkit-appearance: none;
@@ -223,7 +262,8 @@ $light_gray: #eee;
       color: $light_gray;
       height: 47px;
       &:-webkit-autofill {
-        -webkit-text-fill-color: #fff !important;
+        box-shadow: 0 0 0px 1000px $bg inset !important;
+         -webkit-text-fill-color: $cursor !important;
       }
     }
   }
@@ -236,7 +276,7 @@ $light_gray: #eee;
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style  lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
@@ -245,6 +285,7 @@ $light_gray: #eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
+  overflow: hidden;
   .login-form {
     position: absolute;
     left: 0;
@@ -264,29 +305,63 @@ $light_gray: #eee;
       }
     }
   }
+  .title-container {
+    position: relative;
+
+    .title {
+      font-size: 26px;
+      color: #4cc3b8;
+      margin: 0px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .set-language {
+      color: #4cc3b8;
+      position: absolute;
+      top: 3px;
+      font-size: 18px;
+      right: 0px;
+      cursor: pointer;
+    }
+  }
   .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
+   padding: 6px 5px 6px 15px;
+    color: $light_gray;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
   }
-  .title {
-    font-size: 26px;
-    font-weight: 400;
-    color: $light_gray;
-    margin: 0px auto 40px auto;
-    text-align: center;
-    font-weight: bold;
-  }
+  // .title {
+  //   font-size: 26px;
+  //   font-weight: 400;
+  //   color: $light_gray;
+  //   margin: 0px auto 40px auto;
+  //   text-align: center;
+  //   font-weight: bold;
+  // }
   .show-pwd {
     position: absolute;
     right: 10px;
     top: 7px;
     font-size: 16px;
-    color: $dark_gray;
+    color: $light_gray;
     cursor: pointer;
     user-select: none;
   }
+   @media only screen and (max-width: 470px) {
+    .thirdparty-button {
+      display: none;
+    }
+  }
 }
+
+  .btn-login{
+      color: #FFFFFF;
+      background-color:#4cc3b8;
+      border-color:#4cc3b8;
+    }
+  el-input__inner::placeholder {
+    color: $light_gray;
+  }
 </style>
