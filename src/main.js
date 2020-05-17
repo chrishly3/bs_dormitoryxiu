@@ -19,6 +19,9 @@ import { elementSize } from './settings'
 import '@/directive'
 import * as filters from './filters' // global filters
 
+import VueParticles from 'vue-particles'// 背景颗粒子插件
+Vue.use(VueParticles)
+
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
