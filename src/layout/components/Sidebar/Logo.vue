@@ -15,7 +15,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import logoImg from '@/assets/images/logo.png'
+import logoImg from '@/assets/images/logo.jpg'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -48,7 +48,7 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #473c8b;
+  background: #1E90FF;
   color: #fdfdfd;
   font-size: 20px;
   overflow: hidden;
