@@ -215,7 +215,7 @@
               v-has="'pre_user:update:roles'"
               type="info"
               @click="updateUserRole(scope.row)"
-            >修改角色</el-button>
+            >修改</el-button>
             <el-button
               v-has="'pre_user:update'"
               type="primary"
