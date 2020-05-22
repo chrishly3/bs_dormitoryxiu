@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import { Table } from 'element-ui'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -54,6 +55,23 @@ export const constantRoutes = [
           icon: 'link'
         }
       }
+    ]
+  },
+
+  {
+    path: '/repair',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'PrePerm',
+        component: () => import('@/views/repair/index'),
+        meta: {
+          //resources: 'pre_perm',
+          icon:"table",
+          title: '超级聊天室'
+        }
+      },
     ]
   },
 
@@ -172,6 +190,16 @@ export const asyncRouterMap = [
         meta: {
           resources: 'sys_china_area',
           title: '行政地区'
+        }
+      },
+      {
+        path: 'index',
+        component: () => import('@/views/sys/repair/index'),
+        name: '维修单管理',
+        meta: {
+          //resources: 'sys_repair',
+          icon: 'table',
+          title: '维修单管理'
         }
       },
       {
