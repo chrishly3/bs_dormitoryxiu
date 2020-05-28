@@ -189,7 +189,7 @@ export const asyncRouterMap = [
         name: 'SysChinaArea',
         meta: {
           resources: 'sys_china_area',
-          title: '行政地区'
+          title: '维修单管理'
         }
       },
       {
