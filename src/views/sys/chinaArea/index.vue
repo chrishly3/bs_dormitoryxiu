@@ -35,18 +35,18 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="createPerson" label="创建人学生姓名" width="150" />
+      <el-table-column prop="repair_UserName" label="创建人学生姓名" width="150" />
       <!-- <el-table-column prop="repairUserName" label="维修员姓名" width="150" /> -->
-      <el-table-column prop="repairDoorNum" label="房间号" width="150" />
-      <el-table-column prop="repairType" label="维修项目" width="150" />
-      <el-table-column prop="repairMessage" label="损坏原因以及维修建议"  width="200"/>
+      <el-table-column prop="repair_Doornum" label="房间号" width="150" />
+      <el-table-column prop="repair_Type" label="维修项目" width="150" />
+      <el-table-column prop="repair_Message" label="损坏原因以及维修建议"  width="200"/>
       <el-table-column label="维修状态" width="150" >
         <template slot-scope="scope">
 
          <!--  {{ scope.row.userType===1?'管理员':'普通用户' }} -->
-          <el-tag type="danger" effect="dark" v-if="scope.row.repairStatus==0">未处理</el-tag>
-          <el-tag type="warning" effect="dark" v-if="scope.row.repairStatus==1">处理中</el-tag>
-          <el-tag type="success" effect="dark" v-if="scope.row.repairStatus==2">已处理</el-tag>
+          <el-tag type="danger" effect="dark" v-if="scope.row.repair_Status==0">未处理</el-tag>
+          <el-tag type="warning" effect="dark" v-if="scope.row.repair_Status==1">处理中</el-tag>
+          <el-tag type="success" effect="dark" v-if="scope.row.repair_Status==2">已处理</el-tag>
           
         </template>
       </el-table-column>
@@ -57,6 +57,18 @@
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
+          <el-dropdown>
+          <span class="el-dropdown-link">
+            完成进度<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown" >
+            <el-dropdown-item @click="show(scope.row.id)">未开始</el-dropdown-item>
+            <el-dropdown-item>进行中</el-dropdown-item>
+            <el-dropdown-item>已完成</el-dropdown-item>
+            <el-dropdown-item disabled>双皮奶</el-dropdown-item>
+            <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         </template>
       </el-table-column>
 
@@ -74,6 +86,15 @@
   </div>
   
 </template>
+<style>
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+</style>
 
 <script>
 import order from '@/api/order'
@@ -106,6 +127,10 @@ export default {
         },
     rowClass({row,rowIndex}){
           return "text-align:center"
+        },
+
+        show(id){
+          alert(id);
         },
          //2 删除的方法
       removeDataById(id) {
@@ -167,6 +192,13 @@ export default {
                     console.log(response)
                 })
         },
+
+        resetData(){
+           this.searchObj.repairName = "";
+           this.searchObj.repairType = "";
+           this.getListOrder();
+
+        }
     },
     
 
