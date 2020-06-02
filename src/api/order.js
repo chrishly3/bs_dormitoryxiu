@@ -17,6 +17,7 @@ export default{
         })
     },
 
+
      //删除
      deleteOrderId(id) {
         return request({
@@ -35,6 +36,19 @@ export default{
             method: 'get'
         })
     },
+
+    //根据姓名查询
+    getOrderNameList(page, pageSize,loginUserName) {
+        return request({
+             //后端controller里面的路径
+             url: '/order/moreCondtionPageList2/' + page + '/' + pageSize + '/' + loginUserName,
+             //提交方式
+             method: 'post',
+             //传递条件对象,如果传递json数据，使用data。如果不是json，使用params
+             //data: loginUserName
+        })
+    },
+    
     //添加
     saveOrder(order) {
         return request({
@@ -43,6 +57,18 @@ export default{
             //提交方式
             method: 'post',
             data: order
+        })
+    },
+
+    //添加评论
+    addEvaluatedata(evaluatedata) {
+        console.log(evaluatedata)
+        return request({
+            //后端controller里面的路径
+            url: '/order/addEvaluatedata',
+            //提交方式
+            method: 'post',
+            data: evaluatedata
         })
     },
     //修改用户
