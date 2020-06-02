@@ -51,12 +51,32 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="400" align="center">
         <template slot-scope="scope">
           <router-link :to="'/order/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
+
+          <el-button  @click="dialogVisible = true">显示评论</el-button>
+
+          <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose">
+            <!-- <span>这是一段信息</span> -->
+          <div class="block">
+            <span class="demonstration">添加评分</span>
+            
+          </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="confirmText()">确 定</el-button>
+            </span>
+          </el-dialog>
+
+          
           <el-dropdown>
           <span class="el-dropdown-link">
             完成进度<i class="el-icon-arrow-down el-icon--right"></i>
