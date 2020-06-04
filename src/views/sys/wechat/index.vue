@@ -51,13 +51,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="400" align="center">
+      <el-table-column label="操作" width="300" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/order/edit/'+scope.row.id">
+          <!-- <router-link :to="'/order/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
+          </router-link> -->
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
-          <el-button  @click="dialogVisible = true">添加评论</el-button>
+          <el-button   @click="open(scope.row.id)" :disabled="scope.row.status === 1">添加评论</el-button>
 
           <el-dialog
             title="提示"
@@ -80,10 +80,10 @@
         </el-input>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="confirmText()">确 定</el-button>
+              <el-button type="primary" @click="confirmText(scope.row.id)">确 定</el-button>
             </span>
           </el-dialog>
-          <el-dropdown>
+         <!--  <el-dropdown>
           <span class="el-dropdown-link">
             完成进度<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -94,7 +94,7 @@
             <el-dropdown-item disabled>双皮奶</el-dropdown-item>
             <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
         </template>
       </el-table-column>
 
@@ -143,9 +143,11 @@ export default {
             },
             dialogVisible:true,
             evaluatedata:{
+              repairId:"",
               star: null,
               msgText:"",
             },
+            evaluateable:[false,true,false,true,true,true],
              
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
              dialogVisible: false,
@@ -245,6 +247,7 @@ export default {
                    //this.total = response.data.data.items.total
                    this.total = response.total;
 
+
                    //console.log(response.data.data.items.list)
 
                    this.listLoading = false
@@ -261,25 +264,38 @@ export default {
 
         },
 
-         confirmText(){
+        open(id){
+          this.evaluatedata.repairId=id;
+          if(this.evaluatedata.star ||this.evaluatedata.msgText){
+            this.evaluatedata.star=""
+            this.evaluatedata.msgText=""
+          }
+          this.dialogVisible = true;
+        },
+
+
+         confirmText(id){
            //alert(this.evualatedata.value2)
-
-          this.dialogVisible = false;
-
+          
           order.addEvaluatedata(this.evaluatedata)
                 .then(response => { //如果请求成功，返回状态码20000，执行then里面操作
-                    console.log(response)
+                console.log(response)
                     this.$message({
                     message: '添加评论成功',
                     type: 'success'
                   });
+                  this.evaluateable=true;
                 }) 
                 .catch(response => { //如果请求失败，执行catch里面操作
                     console.log(response)
                 })
-
+          this.dialogVisible = false;
+          this.getListOrder();
+          location.reload();
         }
+        
     },
+    
     
    
     
