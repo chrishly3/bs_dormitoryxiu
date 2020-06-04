@@ -71,7 +71,28 @@ export default{
             data: evaluatedata
         })
     },
-    //修改用户
+    //获得评论
+    getEvaluate(id){
+        return request({
+            //后端controller里面的路径
+            url: '/order/getEvaluate/'+id,
+            //提交方式
+            method: 'get'
+            
+        })
+    },
+
+    //修改维修单状态
+    updateOrderStatus(id, status) {
+        return request({
+            //后端controller里面的路径
+            url: '/order/updateOrderStatus/' + id+ '/' + status,
+            //提交方式
+            method: 'get'
+        })
+    },
+
+    //修改维修单
     updateOrderId(id, order) {
         return request({
             //后端controller里面的路径
