@@ -51,33 +51,52 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="400" align="center">
+      <el-table-column label="操作" width="300" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/order/edit/'+scope.row.id">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
+          <!-- <router-link :to="'/order/edit/'+scope.row.id"> -->
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="open1(scope.row.id)">修改</el-button>
+            <el-dialog
+            title="修改完成进度"
+            :visible.sync="dialogVisible1"
+            width="30%"
+            :before-close="handleClose1">
+           
+          <div class="block">
+            <el-radio-group v-model="radio">
+              <el-radio :label="0">未处理</el-radio>
+              <el-radio :label="1">处理中</el-radio>
+              <el-radio :label="2">已完成</el-radio>
+            </el-radio-group>
+          </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="confirmText(scope.row.id)">确 定</el-button>
+            </span>
+          </el-dialog>
+          <!-- </router-link> -->
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
 
-          <el-button  @click="dialogVisible = true">显示评论</el-button>
+          <el-button  @click="open(scope.row.id)" :disabled="scope.row.status === 0">显示评论</el-button>
 
           <el-dialog
+          
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
             :before-close="handleClose">
-            <!-- <span>这是一段信息</span> -->
+           
           <div class="block">
-            <span class="demonstration">添加评分</span>
+            <span class="demonstration">{{msgText}}</span>
             
           </div>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="confirmText()">确 定</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
           </el-dialog>
 
           
-          <el-dropdown>
+         <!--  <el-dropdown>
           <span class="el-dropdown-link">
             完成进度<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -88,7 +107,7 @@
             <el-dropdown-item disabled>双皮奶</el-dropdown-item>
             <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
         </template>
       </el-table-column>
 
@@ -123,10 +142,21 @@ export default {
     data() {
         return {
             listLoading: true, // 是否显示loading信息
+           
             list:null, //每页数据list集合
             total:0, //总记录数
             page:1,//当前页
             pageSize:4,//每页显示记录数
+            radio:0,
+            dialogVisible:false,
+            dialogVisible1:false,
+            id:"",
+             evaluatedata:{
+              repairId:"",
+              star: null,
+              msgText:"",
+            },
+            msgText:"",
             searchObj:{
               repairUserName:"",
               repairType:"",
@@ -141,6 +171,21 @@ export default {
       
     },
     methods:{
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+
+      handleClose1(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
 
     cellStyle({row,column,rowIndex,columnIndex}){
           return "text-align:center";
@@ -212,14 +257,70 @@ export default {
                     console.log(response)
                 })
         },
+        open(id){
+           /* if(this.msgText==null){
+           
+           this.$alert('此用户暂时没有提交评论', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ 已关闭 }`
+            });
+          }
+        });
+         } */
+
+        order.getEvaluate(id)
+         .then(response => { //如果请求成功，返回状态码20000，执行then里面操作
+                console.log(response)
+                this.msgText=response[0].msgText;
+                  console.log(this.msgText)
+
+
+                  
+
+                
+
+                }) 
+                .catch(response => { //如果请求失败，执行catch里面操作
+                    console.log(response)
+                })
+         this.dialogVisible = true
+    },
 
         resetData(){
            this.searchObj.repairName = "";
            this.searchObj.repairType = "";
            this.getListOrder();
 
-        }
+        },
+
+        open1(id){
+          this.id=id;
+          this.dialogVisible1 = true;
+        },
+        confirmText(id){
+           order.updateOrderStatus(this.id,this.radio)
+                .then(response => { //如果请求成功，返回状态码20000，执行then里面操作
+                console.log(response)
+                    this.$message({
+                    message: '修改状态成功',
+                    type: 'success'
+                  });
+                }) 
+                .catch(response => { //如果请求失败，执行catch里面操作
+                    console.log(response)
+                })
+                location.reload();
+      }
     },
+
+    
+
+    
+
+   
     
 
      
